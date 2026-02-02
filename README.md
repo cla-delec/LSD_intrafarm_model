@@ -28,3 +28,16 @@ The different selective culling scenarios were defined based on a combination of
 
 Finally, upon initiation of selective culling (i.e., seven days after the appearance of the first symptomatic animal), the model assumes that vector control is implemented such that the vector population is reduced instantaneously and maintained at this reduced level until the end of virus circulation in the herd. To account for different levels of effectiveness of insecticide treatment, due to varying degrees of vector resistance or protocol compliance, three levels of reduction in the vector population were considered: 0% (no vector control), 50% (moderately effective vector control), and 80% (effective vector control).
 
+## Parameter values
+
+| Parameter       | Definition    | Value  |  Reference |
+| -------------   |:-------------:| :---:  | -----:     |
+| $\frac{1}{\mu}$ | Lifespan of *Stomoxys* | 21 days | Vergne et al. 2021 |
+| $\frac{1}{\tau_V}$ | Duration of infectiousness of *Stomoxys* | 5.5 days | Haegeman et al. 2023, Sanz-Bernardo et al. 2021 |
+| $p_S$ | Probability of showing clinical signs in cattle | 0.5 | Haegeman et al. 2023 |
+| $\frac{1}{\tau_{CS}}$ | Duration of infectiousness of symptomatic cattle, for cows not dying from the infection | 40 days | Haegeman et al. 2023 |
+| $\frac{1}{\tau_{CA}}$ | Duration of infectiousness of asymptomatic cattle | 15 days | Haegeman et al. 2023 |
+| $\frac{1}{\alpha}$ | Delay between symptom onset and death in cattle | 20 days | Tuppurainen et al. 2020 |
+| $\frac{1}{b}$ | Delay before subdivision into pre-death or pre-recovery in cattle | 1 day | Assumed |
+
+
