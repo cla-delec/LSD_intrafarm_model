@@ -28,6 +28,9 @@ The different selective culling scenarios were defined based on a combination of
 
 Finally, upon initiation of selective culling (i.e., seven days after the appearance of the first symptomatic animal), the model assumes that vector control is implemented such that the vector population is reduced instantaneously and maintained at this reduced level until the end of virus circulation in the herd. To account for different levels of effectiveness of insecticide treatment, due to varying degrees of vector resistance or protocol compliance, three levels of reduction in the vector population were considered: 0% (no vector control), 50% (moderately effective vector control), and 80% (effective vector control).
 
+![fig1](./figures/Model/fig_model_intervention_AB.png)
+*Figure 1: Compartmental model for LSD within-farm transmission. **A** Model without intervention strategies, used until the first detection of an infectious individual. **B** Model with intervention strategies.*
+
 ## Parameter values
 
 | Parameter       | Definition    | Value  |  Reference |
@@ -50,4 +53,5 @@ Finally, upon initiation of selective culling (i.e., seven days after the appear
 | r | Test sensitivity for cattle in the second stage of their latent period prior to becoming infectious symptomatic | 0.5 | Assumed |
 | $Se_1$ | Test sensitivity for infectious symptomatic cattle | 1 | |
 | $Se_2$ | Test sentivity for infectious asymptomatic cattle | 0-1 | Varying |
+
 
