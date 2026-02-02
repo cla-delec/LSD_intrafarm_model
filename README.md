@@ -39,5 +39,15 @@ Finally, upon initiation of selective culling (i.e., seven days after the appear
 | $\frac{1}{\tau_{CA}}$ | Duration of infectiousness of asymptomatic cattle | 15 days | Haegeman et al. 2023 |
 | $\frac{1}{\alpha}$ | Delay between symptom onset and death in cattle | 20 days | Tuppurainen et al. 2020 |
 | $\frac{1}{b}$ | Delay before subdivision into pre-death or pre-recovery in cattle | 1 day | Assumed |
-
+| $p_D$ | Probability of death for symptomatic cattle | 0.12 | Pite et al. 2017 |
+| $\frac{1}{a}$ | Timeliness of detectability in pre-infectious cattle | 1-10 days | Varying |
+| $\delta$ | Duration of latency in cattle | 10 days | |
+| $\frac{1}{\gamma}$ | Duration between onset of detectability and onset of infectiousness | $\delta - \frac{1}{a}$ | Varying |
+| k | Biting rate of *Stomoxys* | 0.5 | Sanz-Bernardo et al. 2021, Vergne et al. 2021 |
+| $p_C$ | Probability of cattle infection from being bitten by a contaminated *Stomoxys* | 0.07 | Gubbins et al. 2019 |
+| $p_{VS}$ | Probability of *Stomoxys* contamination from biting symptomatic infectious cattle | 0.46 | Gubbins et al. 2019 |
+| $p_{VA}$ | Probability of *Stomoxys* contamination from biting asymptomatic infectious cattle | 0.2 | Haegeman et al. 2023 |
+| r | Test sensitivity for cattle in the second stage of their latent period prior to becoming infectious symptomatic | 0.5 | Assumed |
+| $Se_1$ | Test sensitivity for infectious symptomatic cattle | 1 | |
+| $Se_2$ | Test sentivity for infectious asymptomatic cattle | 0-1 | Varying |
 
