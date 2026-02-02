@@ -89,32 +89,33 @@ iip <- 10
 r <- 0.5 #reduction se for latent stage 2 animals
 start_interventions <- 7
 
+#initialize result dfs
 n_metrics <- 5
 
-# size_results <- nrow(test_combinations) * n_metrics
-# results <- data.frame(
-#   se = numeric(size_results),
-#   days_detectable = numeric(size_results),
-#   effectiveness_insecticide = numeric(size_results),
-#   metric = numeric(size_results),
-#   med = numeric(size_results),
-#   avg = numeric(size_results),
-#   p5 = numeric(size_results),
-#   p95 = numeric(size_results)
-# )
-# 
-# size_df_log <- n*nrow(test_combinations)
-# df_log <- data.frame(
-#   node = numeric(size_df_log),
-#   tot_cases_cattle = numeric(size_df_log),
-#   tot_cases_vector = numeric(size_df_log),
-#   tot_culled = numeric(size_df_log),
-#   duration_epi = numeric(size_df_log),
-#   duration_epi_tot = numeric(size_df_log),
-#   se = numeric(size_df_log),
-#   days_detectable = numeric(size_df_log),
-#   effectiveness_insecticide = numeric(size_df_log)
-# )
+size_results <- nrow(test_combinations) * n_metrics
+results <- data.frame(
+  se = numeric(size_results),
+  days_detectable = numeric(size_results),
+  effectiveness_insecticide = numeric(size_results),
+  metric = numeric(size_results),
+  med = numeric(size_results),
+  avg = numeric(size_results),
+  p5 = numeric(size_results),
+  p95 = numeric(size_results)
+)
+
+size_df_log <- n*nrow(test_combinations)
+df_log <- data.frame(
+  node = numeric(size_df_log),
+  tot_cases_cattle = numeric(size_df_log),
+  tot_cases_vector = numeric(size_df_log),
+  tot_culled = numeric(size_df_log),
+  duration_epi = numeric(size_df_log),
+  duration_epi_tot = numeric(size_df_log),
+  se = numeric(size_df_log),
+  days_detectable = numeric(size_df_log),
+  effectiveness_insecticide = numeric(size_df_log)
+)
 
 row_id_res <- 1
 row_id_log <- 1
@@ -131,17 +132,21 @@ for (i in 1:nrow(test_combinations)) {
     a_dur=iip-cur_days_detectable
   }
   
+  #model parameters
+  params <- c(k=0.5, p_c=0.07,  
+              a=1/a_dur, ps=0.5,
+              gamma=1/cur_days_detectable, 
+              b=1, pd = 0.12,
+              tau_CA=1/15,tau_CS=1/40, alpha=1/20,
+              #p_vs=0.22, p_va=0.006,
+              p_vs=0.46, p_va=0.2,
+              nu=1/21,
+              tau_v=1/5.5, mu=1/21)
+  
   #run model init to get initial conditions for simu
   model_init <- mparse(transitions = transitions, compartments = compartments,
                        #parameter values
-                       gdata = c(k=0.5, p_c=0.07,  
-                                 a=1/a_dur, ps=0.5,
-                                 gamma=1/cur_days_detectable, 
-                                 b=1, pd = 0.12,
-                                 tau_CA=1/15,tau_CS=1/40, alpha=1/20,
-                                 #p_vs=0.22, p_va=0.006,
-                                 p_vs=0.46, p_va=0.2,
-                                 tau_v=1/5.5, mu=1/21), 
+                       gdata = params, 
                        u0 = u0, tspan = 1:200)
   
   # run simulations 
@@ -159,27 +164,27 @@ for (i in 1:nrow(test_combinations)) {
     pivot_longer(cols = -c(node, time), names_to = "compartment",values_to = "count")
   
   # plot and save trajectories for inspection
-  # traj_init_stats <- traj_init_long %>% 
+  # traj_init_stats <- traj_init_long %>%
   #   group_by(time, compartment) %>%
-  #   summarise(med = median(count), 
-  #             q05  = quantile(count, 0.05), q95  = quantile(count, 0.95), 
+  #   summarise(med = median(count),
+  #             q05  = quantile(count, 0.05), q95  = quantile(count, 0.95),
   #             .groups = "drop")
-  t_plot<-ggplot(traj_init_stats , aes(x = time, color = compartment, fill = compartment)) +
-    geom_ribbon(aes(ymin = q05, ymax = q95), alpha = 0.2, colour = NA) +
-    geom_line(aes(y = med), linewidth = 1) +
-    theme_minimal() +
-    labs(x = "Time (days)",y = "Count",title = "") +
-    theme_bw() +
-    scale_color_manual(name="",
-                       labels = c("Cumulative deaths", "Infected", "Symptomatic infected"),
-                       values = c("#5A9CB5", "#FAAC68", "#FA6868"))+
-    scale_fill_manual(name="",
-                      labels = c("Cumulative deaths", "Infected", "Symptomatic infected"),
-                      values = c("#5A9CB5", "#FAAC68", "#FA6868"))+
-    theme(legend.position = c(0.95, 0.95),
-      legend.justification = c(1, 1),
-      legend.background = element_rect(fill = "white", color = "black"),
-      legend.title = element_blank())
+  # t_plot<-ggplot(traj_init_stats , aes(x = time, color = compartment, fill = compartment)) +
+  #   geom_ribbon(aes(ymin = q05, ymax = q95), alpha = 0.2, colour = NA) +
+  #   geom_line(aes(y = med), linewidth = 1) +
+  #   theme_minimal() +
+  #   labs(x = "Time (days)",y = "Count",title = "Example of trajectories of the model with no interventions") +
+  #   theme_bw() +
+  #   scale_color_manual(name="",
+  #                      labels = c("Cumulative deaths", "Infected", "Symptomatic infected"),
+  #                      values = c("#5A9CB5", "#FAAC68", "#FA6868"))+
+  #   scale_fill_manual(name="",
+  #                     labels = c("Cumulative deaths", "Infected", "Symptomatic infected"),
+  #                     values = c("#5A9CB5", "#FAAC68", "#FA6868"))+
+  #   theme(legend.position = c(0.95, 0.95),
+  #     legend.justification = c(1, 1),
+  #     legend.background = element_rect(fill = "white", color = "black"),
+  #     legend.title = element_blank())
 
   # extract time with first symptomatic
   time_detection <- traj_init %>% filter(Icpredeath>0 | Icprerecovery>0 | Icsymp>0)  %>% 
@@ -254,14 +259,7 @@ for (i in 1:nrow(test_combinations)) {
   # run model with events starting from initial values defined previously
   model_events <- mparse(transitions = transitions, compartments = compartments,
                          #parameter values
-                         gdata = c(k=0.5, p_c=0.07,  
-                                   a=1/a_dur, ps=0.5,
-                                   gamma=1/cur_days_detectable, 
-                                   b=1, pd = 0.12,
-                                   tau_CA=1/15,tau_CS=1/40, alpha=1/20,
-                                   #p_vs=0.22, p_va=0.006,
-                                   p_vs=0.46, p_va=0.2,
-                                   tau_v=1/5.5, mu=1/21), 
+                         gdata = params, 
                          u0 = new_init_values, tspan = 1:500,
                          events=all_events_cur,
                          E=E, N=N)
@@ -279,16 +277,16 @@ for (i in 1:nrow(test_combinations)) {
     pivot_longer(cols = -c(node, time), names_to = "compartment",values_to = "count")
   
   # plot and save trajectories for inspection
-  p_t<-ggplot(traj_final_long %>% filter(compartment %in% c("Iv","Ic_tot","Ic_sympto","Culled"), node %in% 1:50),
-              aes(x=time, y=count, group=node, color=compartment)) +
-    geom_line() +
-    facet_wrap(~compartment, scale="free_y",
-               labeller = as_labeller(c(Ic_sympto = "Symptomatic animal",
-                                        Ic_tot = "Infected animals", Culled="Culled animal",
-                                        Iv = "Infected vector")))  +
-    theme_bw() + theme(legend.position = "none") +
-    scale_color_manual(values = c("#5A9CB5", "#FACE68", "#FAAC68", "#FA6868")) + xlim(0,150)
-  ggsave(paste0("figures/final_param_set/trajectories_se_daysd_500insect_2/ex_trajectory_curdaysd",cur_days_detectable,"_se",cur_se,"_insect",cur_eff_insecticide,".png"), bg="white")
+  # p_t<-ggplot(traj_final_long %>% filter(compartment %in% c("Iv","Ic_tot","Ic_sympto","Culled"), node %in% 1:50),
+  #             aes(x=time, y=count, group=node, color=compartment)) +
+  #   geom_line() + ggtitle("Trajectory of the model with test and remove strategy") +
+  #   facet_wrap(~compartment, scale="free_y",
+  #              labeller = as_labeller(c(Ic_sympto = "Symptomatic animal",
+  #                                       Ic_tot = "Infected animals", Culled="Culled animal",
+  #                                       Iv = "Infected vector")))  +
+  #   theme_bw() + theme(legend.position = "none") +
+  #   scale_color_manual(values = c("#5A9CB5", "#FACE68", "#FAAC68", "#FA6868")) + xlim(0,150)
+  # ggsave(paste0("figures/final_param_set/trajectories_se_daysd_500insect_2/ex_trajectory_curdaysd",cur_days_detectable,"_se",cur_se,"_insect",cur_eff_insecticide,".png"), bg="white")
   
   duration_epi <- traj_final_long %>% filter(compartment=="Ic_tot", count>0) %>% 
     group_by(node) %>% summarise(duration_epi=max(time)) %>% 
@@ -342,9 +340,14 @@ for (i in 1:nrow(test_combinations)) {
 }
 
 
-
 # save(results, file = "Results/result_summary_metric_100rep.RData")
 # save(df_log, file = "Results/result_log_100rep.RData")
+
+#######################################################################
+# PLOT RESULTS
+
+load("Results/result_summary_metric_100rep.RData")
+load("Results/result_log_100rep.RData")
 
 global_limits_culled <- range((results %>% filter(metric=="culled"))$avg, na.rm = TRUE)
 global_limits_dur <- range((results %>% filter(metric=="duration"))$avg, na.rm = TRUE)
