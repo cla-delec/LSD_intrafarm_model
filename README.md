@@ -55,3 +55,4 @@ Finally, upon initiation of selective culling (i.e., seven days after the appear
 | $Se_2$ | Test sentivity for infectious asymptomatic cattle | 0-1 | Varying |
 
 
+
