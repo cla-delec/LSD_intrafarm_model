@@ -1,7 +1,7 @@
 # An intra-farm stochastic model of Lumpy Skin Disease
 *Clara Delecroix, 02/02/2026*
 
-*With contribution of Gaël Beaunée, Stéphane Bertagnoli, Sébastien Picault, Thibautd Lurier, Guillaume Fournié, Timothée Vergne*
+*With contribution of Gaël Beaunée, Stéphane Bertagnoli, Sébastien Picault, Thibaut Lurier, Guillaume Fournié, Timothée Vergne*
 
 
 This repository contains a stochastic, intra-farm model implemented using the package SimInf to investigate transmission dynamics of Lumpy Skin Disease. 
@@ -58,6 +58,7 @@ Finally, upon initiation of selective culling (i.e., seven days after the appear
 | r | Test sensitivity for cattle in the second stage of their latent period prior to becoming infectious symptomatic | 0.5 | Assumed |
 | $Se_1$ | Test sensitivity for infectious symptomatic cattle | 1 | |
 | $Se_2$ | Test sentivity for infectious asymptomatic cattle | 0-1 | Varying |
+
 
 
 
